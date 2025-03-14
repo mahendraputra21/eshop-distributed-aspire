@@ -4,6 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 
 builder.AddNpgsqlDbContext<ProductDbContext>(connectionName: "catalogdb");
+builder.Services.AddScoped<ProductService>();
 
 var app = builder.Build();
 
