@@ -1,6 +1,18 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-// add projects and cloud-native backing services here
-builder.AddProject<Projects.catalog>("catalog");
+// Backing Services
+var postgres = builder
+        .AddPostgres("postgres")
+        .WithPgAdmin()
+        .WithDataVolume()
+        .WithLifetime(ContainerLifetime.Persistent);
+
+var catalogDb = postgres.AddDatabase("catalogdb");
+
+// Projects
+var catalog = builder
+        .AddProject<Projects.catalog>("catalog")
+        .WithReference(catalogDb)
+        .WaitFor(catalogDb);
 
 builder.Build().Run();
