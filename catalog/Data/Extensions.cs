@@ -1,4 +1,4 @@
-﻿namespace catalog;
+﻿namespace catalog.Data;
 
 public static class Extensions
 {
