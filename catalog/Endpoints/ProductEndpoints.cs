@@ -1,4 +1,4 @@
-﻿namespace catalog.Endpoints;
+﻿namespace Catalog.Endpoints;
 
 public static class ProductEndpoints
 {

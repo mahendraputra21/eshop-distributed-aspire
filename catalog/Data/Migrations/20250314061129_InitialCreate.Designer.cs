@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using catalog.Data;
+using Catalog.Data;
 
 #nullable disable
 
-namespace catalog.Data.Migrations
+namespace Catalog.Data.Migrations
 {
     [DbContext(typeof(ProductDbContext))]
     [Migration("20250314061129_InitialCreate")]

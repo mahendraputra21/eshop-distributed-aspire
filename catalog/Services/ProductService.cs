@@ -1,4 +1,4 @@
-﻿namespace catalog.Services;
+﻿namespace Catalog.Services;
 
 public class ProductService(ProductDbContext dbContext)
 {

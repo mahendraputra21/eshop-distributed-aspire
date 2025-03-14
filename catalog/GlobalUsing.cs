@@ -1,5 +1,5 @@
-﻿global using catalog.Models;
+﻿global using Catalog.Models;
 global using Microsoft.EntityFrameworkCore;
-global using catalog.Data;
-global using catalog.Services;
-global using catalog.Endpoints;
+global using Catalog.Data;
+global using Catalog.Services;
+global using Catalog.Endpoints;

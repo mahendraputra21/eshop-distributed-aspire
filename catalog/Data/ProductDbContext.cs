@@ -1,4 +1,4 @@
-﻿namespace catalog.Data;
+﻿namespace Catalog.Data;
 
 public class ProductDbContext : DbContext
 {
