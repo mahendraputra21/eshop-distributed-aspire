@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Basket\Basket.csproj" />
     <ProjectReference Include="..\catalog\catalog.csproj" />
   </ItemGroup>
 
