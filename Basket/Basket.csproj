@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\catalog\Models\Product.cs" Link="Models\Product.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Aspire.StackExchange.Redis.DistributedCaching" Version="9.0.0" />
   </ItemGroup>
 
