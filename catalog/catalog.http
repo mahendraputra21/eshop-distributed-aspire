@@ -33,5 +33,15 @@ Content-Type: application/json
 
 ###
 
+PUT {{Catalog_HostAddress}}/1
+Content-Type: application/json
+{
+    "name": "Solar Powered Flashlight",
+    "description": "A fantastic product for outdoor enthusiasts",
+    "price": 5.99,
+    "imageUrl": "product1.png"
+}
+###
+
 DELETE {{Catalog_HostAddress}}/10
 Content-Type: application/json
