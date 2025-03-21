@@ -1,6 +1,9 @@
-﻿namespace Catalog.Services;
+﻿using MassTransit;
+using ServiceDefaults.Messaging.Events;
 
-public class ProductService(ProductDbContext dbContext)
+namespace Catalog.Services;
+
+public class ProductService(ProductDbContext dbContext, IBus bus)
 {
     public async Task<IEnumerable<Product>> GetProductAsync()
     {
@@ -20,6 +23,21 @@ public class ProductService(ProductDbContext dbContext)
 
     public async Task UpdateProductAsync(Product updateProduct, Product inputProduct)
     {
+        // if price has changed, raise ProductPriceChanged integration event
+        if (updateProduct.Price != inputProduct.Price) 
+        {
+            // publish Product price changed integration event for update basket prices
+            var integrationEvent = new ProductPriceChangedIntegrationEvent
+            {
+                ProductId = updateProduct.Id, // Id only comes from db entity
+                Name = inputProduct.Name,
+                Description = inputProduct.Description,
+                Price = inputProduct.Price, // set updated product price
+                ImageUrl = inputProduct.ImageUrl
+            };
+            await bus.Publish(integrationEvent);
+        }
+
         // update product with new values
         updateProduct.Name = inputProduct.Name;
         updateProduct.Description = inputProduct.Description;
