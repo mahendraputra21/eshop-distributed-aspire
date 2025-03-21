@@ -15,16 +15,26 @@ var cache = builder
         .WithDataVolume()
         .WithLifetime(ContainerLifetime.Persistent);
 
+var rabbitmq = builder
+    .AddRabbitMQ("rabbitmq")
+    .WithManagementPlugin()
+    .WithDataVolume()
+    .WithLifetime(ContainerLifetime.Persistent);
+
 // Projects
 var catalog = builder
         .AddProject<Projects.Catalog>("catalog")
         .WithReference(catalogDb)
-        .WaitFor(catalogDb);
+        .WithReference(rabbitmq)
+        .WaitFor(catalogDb)
+        .WaitFor(rabbitmq);
 
 var basket = builder
         .AddProject<Projects.Basket>("basket")
         .WithReference(cache)
         .WithReference(catalog)
-        .WaitFor(cache);
+        .WithReference(rabbitmq)
+        .WaitFor(cache)
+        .WaitFor(rabbitmq);
 
 builder.Build().Run();
