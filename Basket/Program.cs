@@ -13,11 +13,28 @@ builder.Services.AddHttpClient<CatalogApiClient>(client =>
 
 builder.Services.AddMassTransitWithAssemblies(Assembly.GetExecutingAssembly());
 
+// keycloak
+builder.Services.AddAuthentication()
+                .AddKeycloakJwtBearer(
+                    serviceName: "keycloak",
+                    realm: "eshop",
+                    configureOptions: options =>
+                    {
+                        options.RequireHttpsMetadata = false;
+                        options.Audience = "account";
+                    }
+                );
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.MapDefaultEndpoints();
 app.MapBasketEndpoints();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.UseHttpsRedirection();
 
