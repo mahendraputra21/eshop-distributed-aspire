@@ -1,12 +1,15 @@
 @Basket_HostAddress = https://localhost:7251/basket
+@accessToken = eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJtVlFjOXVId1RTMlNsU1dtRGUzNzZXQ0QzSkRkbTlQWmlRUnFUMVJKRE4wIn0.eyJleHAiOjE3NDI4NzE5OTgsImlhdCI6MTc0Mjg3MTY5OCwianRpIjoiM2ZmOTY2ZDMtNDZlZS00YzBjLTg3ZjEtNTVlYTk0YzczMmE4IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9lc2hvcCIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiIyN2RjMTJkMi0wOTFhLTQwZGEtYTAyOC02M2YyYmE4MzBiMGMiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJlc2hvcC1jbGllbnQiLCJzaWQiOiIxNDVkOWM1NC02NWMwLTQ2YjctYTU4Yi0yMjM3ZjdiOWFhYTAiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbIi8qIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIiwiZGVmYXVsdC1yb2xlcy1lc2hvcCJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6InRlc3QgdGVzdCIsInByZWZlcnJlZF91c2VybmFtZSI6InRlc3QiLCJnaXZlbl9uYW1lIjoidGVzdCIsImZhbWlseV9uYW1lIjoidGVzdCIsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSJ9.TM2TMeQAcnSrBpLE_WELjGQWWFure8PmwK6vhy2gU0-iVJdCXLRSBKFCj_1bQp4Tz6uhCqmHetnJxT2BWyQYDeSRurjDAvSuPbJVa6zaB8koaWN931lPlB70uaYpVOta08-lwxJXesEjvzryEr67PsGxCnxxeNdqv9NaStL0W07g9ZYTisBk3w0Gg7d7zxkJRZ0DdI_TrcCgrkFIfmKPZ-nlPZ7IAqfktKQqCbshhSu9tRCd0r2hlw20dmeyeGPoRxa9HAVvb2hYAdB3ceSOdY6EoB78JR0KkxSbjs0k7JgLt1QP-as382oHoRAO9I9s34fqMEzK2ey-HT_HoCJF_Q
 
 GET {{Basket_HostAddress}}/swn
 Accept: application/json
+Authorization: Bearer {{accessToken}}
 
 ###
 
 POST {{Basket_HostAddress}}
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 {
     "UserName": "swn",
     "Items": [
@@ -31,6 +34,7 @@ Content-Type: application/json
 
 POST {{Basket_HostAddress}}
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 {
     "UserName": "swn",
     "Items": [
@@ -62,6 +66,7 @@ Content-Type: application/json
 
 DELETE {{Basket_HostAddress}}/swn
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 ###
 POST http://localhost:8080/realms/eshop/protocol/openid-connect/token
