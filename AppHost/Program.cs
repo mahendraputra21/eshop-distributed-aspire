@@ -49,6 +49,7 @@ var webapp = builder
         .WithExternalHttpEndpoints()
         .WithReference(catalog)
         .WithReference(basket)
+        .WithReference(cache)
         .WaitFor(catalog)
         .WaitFor(basket);
 
