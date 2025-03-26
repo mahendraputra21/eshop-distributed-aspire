@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog", "catalog\Catalog.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Basket", "Basket\Basket.csproj", "{11C93E6E-64C1-2C2D-B301-852C7CCA6F88}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "WebApp\WebApp.csproj", "{3215F6CF-A442-1C21-6AD3-94ED23F4EBA5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{11C93E6E-64C1-2C2D-B301-852C7CCA6F88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11C93E6E-64C1-2C2D-B301-852C7CCA6F88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11C93E6E-64C1-2C2D-B301-852C7CCA6F88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3215F6CF-A442-1C21-6AD3-94ED23F4EBA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3215F6CF-A442-1C21-6AD3-94ED23F4EBA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3215F6CF-A442-1C21-6AD3-94ED23F4EBA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3215F6CF-A442-1C21-6AD3-94ED23F4EBA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 		{EDB9F934-206A-4B49-BA8A-4117734DE02D} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{C4F761E8-674E-7804-3E8F-374E41B75BE9} = {E5303B2C-97CA-47C6-8F1D-E35CBB8078FE}
 		{11C93E6E-64C1-2C2D-B301-852C7CCA6F88} = {E5303B2C-97CA-47C6-8F1D-E35CBB8078FE}
+		{3215F6CF-A442-1C21-6AD3-94ED23F4EBA5} = {BA44A1B8-826B-4351-8CBB-2EA48C5792F3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0FCE319E-D295-47ED-83BE-1D15B0016DC2}
