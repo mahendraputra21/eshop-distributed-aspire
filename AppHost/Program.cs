@@ -4,7 +4,7 @@ var builder = DistributedApplication.CreateBuilder(args);
 var postgres = builder
         .AddPostgres("postgres")
         .WithPgAdmin()
-        .WithDataVolume()
+        //.WithDataVolume()
         .WithLifetime(ContainerLifetime.Persistent);
 
 var catalogDb = postgres.AddDatabase("catalogdb");
@@ -12,19 +12,27 @@ var catalogDb = postgres.AddDatabase("catalogdb");
 var cache = builder
         .AddRedis("cache")
         .WithRedisInsight()
-        .WithDataVolume()
+        //.WithDataVolume()
         .WithLifetime(ContainerLifetime.Persistent);
 
 var rabbitmq = builder
-    .AddRabbitMQ("rabbitmq")
-    .WithManagementPlugin()
-    .WithDataVolume()
-    .WithLifetime(ContainerLifetime.Persistent);
+        .AddRabbitMQ("rabbitmq")
+        .WithManagementPlugin()
+        //.WithDataVolume()
+        .WithLifetime(ContainerLifetime.Persistent);
 
 var keycloak = builder
-    .AddKeycloak("keycloak", 8080)
-    .WithDataVolume()
-    .WithLifetime(ContainerLifetime.Persistent);
+        .AddKeycloak("keycloak", 8080)
+        //.WithDataVolume()
+        .WithLifetime(ContainerLifetime.Persistent);
+
+if (builder.ExecutionContext.IsRunMode)
+{
+    // Data volumes don't work on ACA for Postgres so only add when running
+    postgres.WithDataVolume();
+    rabbitmq.WithDataVolume();
+    keycloak.WithDataVolume();
+}
 
 // Projects
 var catalog = builder
