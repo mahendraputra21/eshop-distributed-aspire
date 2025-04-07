@@ -34,13 +34,23 @@ if (builder.ExecutionContext.IsRunMode)
     keycloak.WithDataVolume();
 }
 
+var ollama = builder
+    .AddOllama("ollama", 11434)
+    .WithDataVolume()
+    .WithLifetime(ContainerLifetime.Persistent)
+    .WithOpenWebUI();
+
+var llama = ollama.AddModel("llama3.2");
+
 // Projects
 var catalog = builder
         .AddProject<Projects.Catalog>("catalog")
         .WithReference(catalogDb)
         .WithReference(rabbitmq)
+        .WithReference(llama)
         .WaitFor(catalogDb)
-        .WaitFor(rabbitmq);
+        .WaitFor(rabbitmq)
+        .WaitFor(llama);
 
 var basket = builder
         .AddProject<Projects.Basket>("basket")
