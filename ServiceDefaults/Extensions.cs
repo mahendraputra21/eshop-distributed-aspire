@@ -30,6 +30,12 @@ public static class Extensions
 
             // Turn on service discovery by default
             http.AddServiceDiscovery();
+
+            // Set a default timeout for HttpClient instances
+            //http.ConfigureHttpClient((sp, client) =>
+            //{
+            //    client.Timeout = TimeSpan.FromSeconds(30); // Example: 30 seconds
+            //});
         });
 
         // Uncomment the following to restrict the allowed schemes for service discovery.
