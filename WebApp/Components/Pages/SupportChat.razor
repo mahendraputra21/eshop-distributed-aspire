@@ -1,0 +1,195 @@
+﻿@using Microsoft.AspNetCore.Components
+@using Microsoft.JSInterop
+@inject CatalogApiClient CatalogApiClient
+@inject IJSRuntime JSRuntime
+@implements IAsyncDisposable
+
+<div class="chat-container border rounded p-3" style="height: 500px; width: 100%; max-width: 600px;">
+    <h5 class="mb-3">Outdoor Products Chat</h5>
+
+    <div @ref="chatMessagesRef" class="chat-messages mb-3 bg-light p-2 rounded" style="height: calc(100% - 120px); overflow-y: auto;">
+        @foreach (var message in messages)
+        {
+            <div class="@($"d-flex {(message.IsUser ? "justify-content-end" : "justify-content-start")} mb-2")">
+                <div class="@($"chat-bubble {(message.IsUser ? "user-bubble" : "bot-bubble")} p-2 rounded")">
+                    @message.Content
+                    @if (!message.IsUser && message.ProductId.HasValue)
+                    {
+                        <div class="product-hint mt-1">(Product ID: @message.ProductId)</div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="chat-input">
+        <div class="input-group">
+            <input type="text"
+                   class="form-control"
+                   placeholder="Type your question..."
+                   @bind="queryTerm"
+                   @bind:event="oninput"
+                   @onkeypress="HandleKeyPress"
+                   disabled="@isSending" />
+            <button class="btn btn-primary"
+                    type="button"
+                    @onclick="async () => await DoSend()"
+            @onclick:preventDefault
+                    disabled="@isSending">
+                <i class="bi bi-send"></i>
+                @if (isSending)
+                {
+                    <span class="spinner-border spinner-border-sm ms-1" role="status"></span>
+                }
+            </button>
+        </div>
+        <div class="text-muted small mt-1">Example: "Recommend a camping gadget"</div>
+    </div>
+</div>
+
+@code {
+    private string queryTerm = string.Empty;
+    private readonly List<ChatMessage> messages = new();
+    private ElementReference chatMessagesRef;
+    private IJSObjectReference? module;
+    private bool isSending = false;
+    private DotNetObjectReference<SupportChat>? dotNetHelper;
+
+    private class ChatMessage
+    {
+        public string Content { get; set; } = null!;
+        public bool IsUser { get; set; }
+        public int? ProductId { get; set; }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            dotNetHelper = DotNetObjectReference.Create(this);
+            module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/chatInterop.js");
+            await module.InvokeVoidAsync("initializeChat", dotNetHelper, chatMessagesRef);
+        }
+        else
+        {
+            await ScrollToBottom();
+        }
+    }
+
+    [JSInvokable]
+    public async Task ScrollToBottom()
+    {
+        if (module is not null)
+        {
+            await module.InvokeVoidAsync("scrollToBottom", chatMessagesRef);
+        }
+    }
+
+    private async Task DoSend()
+    {
+        if (string.IsNullOrWhiteSpace(queryTerm)) return;
+
+        isSending = true;
+        var userMessage = queryTerm;
+        queryTerm = string.Empty;
+
+        // Add user message
+        messages.Add(new ChatMessage { Content = userMessage, IsUser = true });
+
+        // Add loading indicator
+        messages.Add(new ChatMessage { Content = "⏳ Searching our outdoor expertise...", IsUser = false });
+
+        StateHasChanged();
+
+        try
+        {
+            var response = await CatalogApiClient.SupportProducts(userMessage);
+
+            // Remove loading indicator
+            messages.RemoveAt(messages.Count - 1);
+
+            // Add bot response
+            var (cleanResponse, productId) = ParseResponse(response);
+            messages.Add(new ChatMessage
+                {
+                    Content = cleanResponse,
+                    IsUser = false,
+                    ProductId = productId
+                });
+        }
+        catch (Exception ex)
+        {
+            messages.Add(new ChatMessage
+                {
+                    Content = $"⚠️ Error: {ex.Message}",
+                    IsUser = false
+                });
+        }
+        finally
+        {
+            isSending = false;
+            await ScrollToBottom();
+        }
+    }
+
+    private (string response, int? productId) ParseResponse(string apiResponse)
+    {
+        var match = System.Text.RegularExpressions.Regex.Match(apiResponse, @"\((\d+)\)");
+        if (match.Success)
+        {
+            var cleanResponse = apiResponse.Replace(match.Value, "").Trim();
+            return (cleanResponse, int.Parse(match.Groups[1].Value));
+        }
+        return (apiResponse, null);
+    }
+
+    private async Task HandleKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter" && !isSending)
+        {
+            await DoSend();
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        dotNetHelper?.Dispose();
+        if (module is not null)
+        {
+            await module.DisposeAsync();
+        }
+    }
+}
+
+<style>
+    .chat-container {
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .chat-bubble {
+        max-width: 70%;
+        word-wrap: break-word;
+    }
+
+    .user-bubble {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .bot-bubble {
+        background-color: #e9ecef;
+        color: black;
+        border: 1px solid #ddd;
+    }
+
+    .product-hint {
+        font-size: 0.8rem;
+        color: #666;
+    }
+
+    .chat-input {
+        border-top: 1px solid #ddd;
+        padding-top: 1rem;
+    }
+</style>
