@@ -70,5 +70,25 @@ public static class ProductEndpoints
         })
         .WithName("Support")
         .Produces(StatusCodes.Status200OK);
+
+        // Traditional Search
+        group.MapGet("search/{query}", async (string query, ProductService service) =>
+        {
+            var products = await service.SearchProductsAsync(query);
+
+            return Results.Ok(products);
+        })
+        .WithName("SearchProducts")
+        .Produces<List<Product>>(StatusCodes.Status200OK);
+
+        // AI Search
+        group.MapGet("aisearch/{query}", async (string query, ProductAIService service) =>
+        {
+            var products = await service.SearchProductsAsync(query);
+
+            return Results.Ok(products);
+        })
+        .WithName("AISearchProducts")
+        .Produces<List<Product>>(StatusCodes.Status200OK);
     }
 }

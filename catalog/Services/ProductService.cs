@@ -54,7 +54,7 @@ public class ProductService(ProductDbContext dbContext, IBus bus)
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<Product>> SearchProductAsync(string query)
+    public async Task<IEnumerable<Product>> SearchProductsAsync(string query)
     {
         return await dbContext.Products
                 .Where(p => p.Name.Contains(query))
