@@ -4,7 +4,7 @@ namespace Catalog.Services;
 
 public class ProductAIService(IChatClient chatClient)
 {
-    public async Task<string> SupportAsync(string query)
+    public Task<string> SupportAsync(string query)
     {
         var systemPrompt = """
         You are a useful assistant. 
@@ -22,7 +22,7 @@ public class ProductAIService(IChatClient chatClient)
             new(ChatRole.User, query)
         };
 
-        var resultPrompt = await chatClient.CompleteAsync(chatHistory);
-        return resultPrompt.Message.Contents[0].ToString()!;
+        //var resultPrompt = await chatClient.CompleteAsync(chatHistory);
+        return Task.FromResult("");
     }
 }
